@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Learn-scope : Learning JS Scopes">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Learn-scope</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/deepspathak/learn-scope">View on GitHub</a>
+
+          <h1 id="project_title">Learn-scope</h1>
+          <h2 id="project_tagline">Learning JS Scopes</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/deepspathak/learn-scope/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/deepspathak/learn-scope/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="learning-javascript-scope" class="anchor" href="#learning-javascript-scope" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Learning Javascript Scope</h1>
+
+<h3>
+<a id="scope" class="anchor" href="#scope" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scope</h3>
+
+<p>The JavaScript language has a few concepts of "scope", none of which are straightforward or easy to understand as a new JavaScript developer (and even some experienced JavaScript developers). </p>
+
+<p>In JavaScript, scope refers to the current context of your code. Scopes can be <em>globally</em> or <em>locally</em> defined. Understanding JavaScript scope is key to writing bulletproof code and being a better developer. You'll understand where variables/functions are accessible, be able to change the scope of your code's context and be able to write faster and more maintainable code, as well as debug much faster.</p>
+
+<h3>
+<a id="global-scope" class="anchor" href="#global-scope" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Global Scope</h3>
+
+<p>Before you write a line of JavaScript, you're in what we call the <code>Global Scope</code>. If we declare a variable, it's defined globally:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// global scope</span>
+<span class="pl-k">var</span> name <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>John Doe<span class="pl-pds">'</span></span>;</pre></div>
+
+<h3>
+<a id="local-scope" class="anchor" href="#local-scope" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Local Scope</h3>
+
+<p>A local scope refers to any scope defined past the global scope. There is typically one global scope, and each function defined has its own (nested) local scope. Any function defined within another function has a local scope which is linked to the outer function.</p>
+
+<p>If I define a function and create variables inside it, those variables becomes locally scoped. Take this example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> test <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>I'm global<span class="pl-pds">"</span></span>;
+<span class="pl-k">function</span> <span class="pl-en">testScope</span>() {
+  <span class="pl-k">var</span> test <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>I'm local<span class="pl-pds">"</span></span>;
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span> (test);     
+}
+<span class="pl-en">testScope</span>();           <span class="pl-c">// output: I'm local</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(test);     <span class="pl-c">// output: I'm global</span></pre></div>
+
+<p>Any locally scoped items are not visible in the global scope - <em>unless</em> exposed, meaning if I define functions or variables within a new scope, it's inaccessible <em>outside</em> of that current scope. A simple example of this is the following:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> <span class="pl-en">myFunction</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> name <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>John Doe<span class="pl-pds">'</span></span>;
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(name); <span class="pl-c">// John Doe</span>
+};
+<span class="pl-c">// Uncaught ReferenceError: name is not defined</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(name);</pre></div>
+
+<p>The variable <code>name</code> is scoped locally, it isn't exposed to the parent scope and therefore undefined.</p>
+
+<p>Another Example is this - </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> locales <span class="pl-k">=</span> {
+  <span class="pl-en">europe</span><span class="pl-k">:</span> <span class="pl-k">function</span>() {          <span class="pl-c">// The Europe continent's local scope</span>
+    <span class="pl-k">var</span> myFriend <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Monique<span class="pl-pds">"</span></span>;
+    <span class="pl-k">var</span> <span class="pl-en">france</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {   <span class="pl-c">// The France country's local scope</span>
+      <span class="pl-k">var</span> <span class="pl-en">paris</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {  <span class="pl-c">// The Paris city's local scope</span>
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(myFriend);
+      };
+      <span class="pl-en">paris</span>();
+    };
+    <span class="pl-en">france</span>();
+  }
+};
+<span class="pl-smi">locales</span>.<span class="pl-en">europe</span>();</pre></div>
+
+<p>This type of look up is called <strong>lexical (static) scope</strong>. The static structure of a program determines the variable scope. The scope of a variable is defined by its location within the source code, and nested functions have access to variables declared in their outer scope. No matter where a function is called from, or even how it’s called, its lexical scope depends only by where the function was declared.</p>
+
+<p>In JavaScript, variables with the same name can be specified at multiple layers of nested scope. In such case local variables gain priority over global variables. If you declare a local variable and a global variable with the same name, the local variable will take precedence when you use it inside a function. This type of behavior is called shadowing. Simply put, the inner variable shadows the outer.</p>
+
+<h3>
+<a id="function-scope" class="anchor" href="#function-scope" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function scope</h3>
+
+<p>All scopes in JavaScript are created with <code>Function Scope</code> <em>only</em>, they aren't created by <code>for</code> or <code>while</code> loops or expression statements like <code>if</code> or <code>switch</code>. New functions = new scope - that's the rule. A simple example to demonstrate this scope creation:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Scope A</span>
+<span class="pl-k">var</span> <span class="pl-en">myFunction</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-c">// Scope B</span>
+  <span class="pl-k">var</span> <span class="pl-en">myOtherFunction</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-c">// Scope C</span>
+  };
+};</pre></div>
+
+<p>It's easy to create new scope and create local variables/functions/objects.</p>
+
+<h3>
+<a id="scope-chain" class="anchor" href="#scope-chain" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scope Chain</h3>
+
+<p>Scope chains establish the scope for a given function. Each function defined has its own nested scope as we know, and any function defined within another function has a local scope which is linked to the outer function - this link is called the chain. It's always the <em>position</em> in the code that defines the scope. When resolving a variable, JavaScript starts at the innermost scope and searches outwards until it finds the variable/object/function it was looking for.</p>
+
+<h3>
+<a id="scope-and-this" class="anchor" href="#scope-and-this" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scope and 'this'</h3>
+
+<p>Each scope binds a different value of <code>this</code> depending on how the function is invoked. We've all used the <code>this</code> keyword, but not all of us understand it and how it differs when invoked. By default <code>this</code> refers to the outer most global object, the <code>window</code>. We can easily show how invoking functions in different ways binds the <code>this</code> value differently:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> <span class="pl-en">myFunction</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>); <span class="pl-c">// this = global, [object Window]</span>
+};
+<span class="pl-en">myFunction</span>();
+
+<span class="pl-k">var</span> myObject <span class="pl-k">=</span> {};
+<span class="pl-c1">myObject</span>.<span class="pl-en">myMethod</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>); <span class="pl-c">// this = Object { myObject }</span>
+};
+
+<span class="pl-k">var</span> nav <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-en">querySelector</span>(<span class="pl-s"><span class="pl-pds">'</span>.nav<span class="pl-pds">'</span></span>); <span class="pl-c">// &lt;nav class="nav"&gt;</span>
+<span class="pl-k">var</span> <span class="pl-en">toggleNav</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>); <span class="pl-c">// this = &lt;nav&gt; element</span>
+};
+<span class="pl-smi">nav</span>.<span class="pl-en">addEventListener</span>(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, toggleNav, <span class="pl-c1">false</span>);</pre></div>
+
+<p>There are also problems that we run into when dealing with the <code>this</code> value, for instance if I do this, even inside the same function the scope can be changed and the <code>this</code> value can be changed:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> nav <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-en">querySelector</span>(<span class="pl-s"><span class="pl-pds">'</span>.nav<span class="pl-pds">'</span></span>); <span class="pl-c">// &lt;nav class="nav"&gt;</span>
+<span class="pl-k">var</span> <span class="pl-en">toggleNav</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>); <span class="pl-c">// &lt;nav&gt; element</span>
+  <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>); <span class="pl-c">// [object Window]</span>
+  }, <span class="pl-c1">1000</span>);
+};
+<span class="pl-smi">nav</span>.<span class="pl-en">addEventListener</span>(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, toggleNav, <span class="pl-c1">false</span>);</pre></div>
+
+<p>So what's happened here? We've created new scope which is not invoked from our event handler, so it defaults to the <code>window</code> Object as expected. There are several things we can do if we want to access the proper <code>this</code> value which isn't affected by the new scope. You might have seen this before, where we can cache a reference to the <code>this</code> value using a <code>that</code> variable and refer to the lexical binding:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> nav <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-en">querySelector</span>(<span class="pl-s"><span class="pl-pds">'</span>.nav<span class="pl-pds">'</span></span>); <span class="pl-c">// &lt;nav class="nav"&gt;</span>
+<span class="pl-k">var</span> <span class="pl-en">toggleNav</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-k">var</span> that <span class="pl-k">=</span> <span class="pl-v">this</span>;
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(that); <span class="pl-c">// &lt;nav&gt; element</span>
+  <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(that); <span class="pl-c">// &lt;nav&gt; element</span>
+  }, <span class="pl-c1">1000</span>);
+};
+<span class="pl-smi">nav</span>.<span class="pl-en">addEventListener</span>(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, toggleNav, <span class="pl-c1">false</span>);</pre></div>
+
+<p>This is a neat little trick to be able to use the proper <code>this</code> value and resolve problems with newly created scope.</p>
+
+<h3>
+<a id="things-to-remember" class="anchor" href="#things-to-remember" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Things to Remember</h3>
+
+<ul>
+<li>All declarations, both functions and variables, are hoisted to the top of the containing scope, before any part of your code is executed.</li>
+<li>Functions are hoisted first, and then variables.</li>
+<li>Function declarations have priority over variable declarations, but not over variable assignments.</li>
+</ul>
+
+<p><em>Sources</em></p>
+
+<ul>
+<li>(<a href="http://doctrina.org/JavaScript:Why-Understanding-Scope-And-Closures-Matter.html">http://doctrina.org/JavaScript:Why-Understanding-Scope-And-Closures-Matter.html</a>)</li>
+<li>(<a href="http://www.sitepoint.com/">http://www.sitepoint.com/</a>)</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Learn-scope maintained by <a href="https://github.com/deepspathak">deepspathak</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
